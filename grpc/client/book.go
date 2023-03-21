@@ -6,8 +6,7 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 )
 
-// Ping is a method
-func (r GRPCClient) List(ctx context.Context) (*book.BookResponse, error) {
+func (r GRPCClient) Ping(ctx context.Context) (*book.BookResponse, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 

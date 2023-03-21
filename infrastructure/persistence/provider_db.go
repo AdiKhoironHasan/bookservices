@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/AdiKhoironHasan/bookservices/config"
+	"github.com/AdiKhoironHasan/bookservices/domain/entity"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -60,7 +61,10 @@ func NewDBConnection(config config.DBConfig) (*gorm.DB, error) {
 }
 
 func AutoMigrate(db *gorm.DB) error {
-	err := db.AutoMigrate()
+	// auto migrate table for database
+	err := db.AutoMigrate(
+		&entity.Book{},
+	)
 
 	if err != nil {
 		return err

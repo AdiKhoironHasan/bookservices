@@ -40,8 +40,10 @@ func (r *Router) Init() *gin.Engine {
 	h := handler.NewHandler(r.repo, r.client)
 
 	helloHandler := handler.NewHelloHandler(h)
+	bookHandler := handler.NewBookHandler(h)
 
 	e.GET("/api/v1/ping", helloHandler.Ping)
+	e.GET("/api/v1/books", bookHandler.List)
 
 	return e
 }

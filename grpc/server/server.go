@@ -5,6 +5,7 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/domain/service"
 	"github.com/AdiKhoironHasan/bookservices/grpc/handler"
 	"github.com/AdiKhoironHasan/bookservices/grpc/interceptor"
+	"github.com/AdiKhoironHasan/bookservices/proto/book"
 	"github.com/AdiKhoironHasan/bookservices/proto/hello"
 
 	"google.golang.org/grpc"
@@ -43,6 +44,7 @@ func (s *Server) Run(port int) error {
 
 	// register from proto
 	hello.RegisterHelloServer(server, handlers)
+	book.RegisterBookServiceServer(server, handlers)
 
 	// register reflection
 	reflection.Register(server)
