@@ -1,0 +1,12 @@
+flow:
+- rest server
+    - rest router
+        - rest handler
+            - grpc client
+                - proto method (proto_grpc.pb.go)
+                === proto contract ===
+                - register server proto (proto_grpc.pb.go)
+            - proto_grpc.pb.go
+        - grpc client
+    - grpc handler
+- grpc server

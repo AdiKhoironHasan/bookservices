@@ -1,15 +1,11 @@
 package client
 
 import (
-	"context"
 	"flag"
 	"log"
-	"time"
 
-	// "github.com/AdiKhoironHasan/bookservices/proto/foo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/metadata"
 )
 
 func Run() {
@@ -29,11 +25,11 @@ func Run() {
 
 	// gClient := NewGRPCClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	md := metadata.Pairs("authorization", "hell")
-	ctx = metadata.NewOutgoingContext(ctx, md)
+	// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	// md := metadata.Pairs("authorization", "hell")
+	// ctx = metadata.NewOutgoingContext(ctx, md)
 
-	defer cancel()
+	// defer cancel()
 
 	// payloads := []*foo.SaveHttpLogRequest{
 	// 	{Ip: "1.1.1.1", Path: "/user", Method: "POST"},

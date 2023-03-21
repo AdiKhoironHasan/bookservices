@@ -11,8 +11,9 @@ import (
 )
 
 var (
+	// cfg        = config.New()
 	serverHost = "localhost"
-	serverPort = 9002
+	serverPort = 9092
 	DSN        = fmt.Sprintf("%s:%d", serverHost, serverPort)
 )
 

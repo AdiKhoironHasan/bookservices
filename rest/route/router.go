@@ -4,6 +4,7 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/config"
 	"github.com/AdiKhoironHasan/bookservices/domain/service"
 	"github.com/AdiKhoironHasan/bookservices/grpc/client"
+	"github.com/AdiKhoironHasan/bookservices/rest/handler"
 	"github.com/AdiKhoironHasan/bookservices/rest/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -36,7 +37,11 @@ func (r *Router) Init() *gin.Engine {
 	e := gin.Default()
 	e.Use(middleware.Logger())
 
-	// hand := handler.NewHandler(r.repo, r.client)
+	h := handler.NewHandler(r.repo, r.client)
+
+	helloHandler := handler.NewHelloHandler(h)
+
+	e.GET("/api/v1/ping", helloHandler.Ping)
 
 	return e
 }
