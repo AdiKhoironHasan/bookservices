@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/AdiKhoironHasan/bookservices/config"
-	"github.com/AdiKhoironHasan/bookservices/grpc/interceptor"
+	"github.com/AdiKhoironHasan/bookservices-books/config"
+	"github.com/AdiKhoironHasan/bookservices-books/grpc/interceptor"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

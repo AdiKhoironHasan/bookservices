@@ -2,7 +2,7 @@ package client
 
 import (
 	protoUser "github.com/AdiKhoironHasan/bookservice-protobank/proto/user"
-	"github.com/AdiKhoironHasan/bookservices/proto/book"
+	"github.com/AdiKhoironHasan/bookservices-books/proto/book"
 	"google.golang.org/grpc"
 )
 

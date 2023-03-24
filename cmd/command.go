@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"github.com/AdiKhoironHasan/bookservices/config"
-	"github.com/AdiKhoironHasan/bookservices/domain/service"
-	"github.com/AdiKhoironHasan/bookservices/grpc/client"
+	"github.com/AdiKhoironHasan/bookservices-books/config"
+	"github.com/AdiKhoironHasan/bookservices-books/domain/service"
+	"github.com/AdiKhoironHasan/bookservices-books/grpc/client"
 	"github.com/urfave/cli/v2"
 )
 

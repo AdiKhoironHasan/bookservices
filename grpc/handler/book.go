@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/AdiKhoironHasan/bookservices/domain/assembler"
-	"github.com/AdiKhoironHasan/bookservices/domain/entity"
-	"github.com/AdiKhoironHasan/bookservices/proto/book"
+	"github.com/AdiKhoironHasan/bookservices-books/domain/assembler"
+	"github.com/AdiKhoironHasan/bookservices-books/domain/entity"
+	"github.com/AdiKhoironHasan/bookservices-books/proto/book"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 

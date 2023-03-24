@@ -1,12 +1,12 @@
 package server
 
 import (
-	"github.com/AdiKhoironHasan/bookservices/config"
-	"github.com/AdiKhoironHasan/bookservices/domain/service"
-	"github.com/AdiKhoironHasan/bookservices/grpc/client"
-	"github.com/AdiKhoironHasan/bookservices/grpc/handler"
-	"github.com/AdiKhoironHasan/bookservices/grpc/interceptor"
-	"github.com/AdiKhoironHasan/bookservices/proto/book"
+	"github.com/AdiKhoironHasan/bookservices-books/config"
+	"github.com/AdiKhoironHasan/bookservices-books/domain/service"
+	"github.com/AdiKhoironHasan/bookservices-books/grpc/client"
+	"github.com/AdiKhoironHasan/bookservices-books/grpc/handler"
+	"github.com/AdiKhoironHasan/bookservices-books/grpc/interceptor"
+	"github.com/AdiKhoironHasan/bookservices-books/proto/book"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
