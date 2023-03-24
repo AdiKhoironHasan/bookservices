@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/AdiKhoironHasan/bookservices/domain/assembler"
 	"github.com/AdiKhoironHasan/bookservices/domain/entity"
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 	"google.golang.org/grpc/status"
@@ -49,65 +50,10 @@ func (c *Handler) List(ctx context.Context, bookReq *book.BookListReq) (*book.Bo
 		books = append(books, book)
 	}
 
-	// ch := make(chan []*book.Book)
-	// defer close(ch)
-	// go func(books []entity.Book, ch chan<- []*book.Book) {
-	// 	value := []*book.Book{}
-	// 	for _, val := range books {
-	// 		value = append(value, &book.Book{
-	// 			Id:          val.ID,
-	// 			Title:       val.Title,
-	// 			Description: val.Description,
-	// 			CreatedAt:   val.CreatedAt.String(),
-	// 			UpdatedAt:   val.UpdatedAt.String(),
-	// 		})
-	// 	}
-
-	// 	ch <- value
-	// }(books, ch)
-	// booksData := <-ch
-
-	dataMap, dataUser := func(users []*protoUser.User, books []entity.Book) (map[int64][]*book.Book, map[int64]string) {
-		dataUser := map[int64]string{}
-		dataMap := map[int64][]*book.Book{}
-
-		for _, val := range users {
-			if _, ok := dataMap[val.Id]; !ok {
-				dataMap[val.Id] = []*book.Book{}
-				dataUser[val.Id] = val.Name
-			}
-		}
-
-		for _, val := range books {
-			if _, ok := dataMap[val.AuthorId]; ok {
-				book := &book.Book{
-					Id:          val.ID,
-					Title:       val.Title,
-					Description: val.Description,
-					CreatedAt:   val.CreatedAt.String(),
-					UpdatedAt:   val.UpdatedAt.String(),
-				}
-
-				dataMap[val.AuthorId] = append(dataMap[val.AuthorId], book)
-			}
-		}
-
-		return dataMap, dataUser
-	}(users.Users, books)
-
-	dataRes := []*book.BookAndAuthor{}
-	for key, val := range dataMap {
-		if len(val) > 0 {
-			dataRes = append(dataRes, &book.BookAndAuthor{
-				AuthorId:   key,
-				AuthorName: dataUser[key],
-				Books:      val,
-			})
-		}
-	}
+	resBooks := assembler.ToResponseBookList(users.Users, books)
 
 	return &book.BookListRes{
-		BookAndAuthor: dataRes,
+		Books: resBooks,
 	}, nil
 }
 
