@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookServiceClient interface {
+	Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error)
 	List(ctx context.Context, in *BookListReq, opts ...grpc.CallOption) (*BookListRes, error)
 	Store(ctx context.Context, in *BookStoreReq, opts ...grpc.CallOption) (*BookStoreRes, error)
 	Detail(ctx context.Context, in *BookDetailReq, opts ...grpc.CallOption) (*BookDetailRes, error)
@@ -35,6 +36,15 @@ type bookServiceClient struct {
 
 func NewBookServiceClient(cc grpc.ClientConnInterface) BookServiceClient {
 	return &bookServiceClient{cc}
+}
+
+func (c *bookServiceClient) Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error) {
+	out := new(PingRes)
+	err := c.cc.Invoke(ctx, "/book.BookService/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *bookServiceClient) List(ctx context.Context, in *BookListReq, opts ...grpc.CallOption) (*BookListRes, error) {
@@ -86,6 +96,7 @@ func (c *bookServiceClient) Delete(ctx context.Context, in *BookDeleteReq, opts 
 // All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
 type BookServiceServer interface {
+	Ping(context.Context, *PingReq) (*PingRes, error)
 	List(context.Context, *BookListReq) (*BookListRes, error)
 	Store(context.Context, *BookStoreReq) (*BookStoreRes, error)
 	Detail(context.Context, *BookDetailReq) (*BookDetailRes, error)
@@ -98,6 +109,9 @@ type BookServiceServer interface {
 type UnimplementedBookServiceServer struct {
 }
 
+func (UnimplementedBookServiceServer) Ping(context.Context, *PingReq) (*PingRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
 func (UnimplementedBookServiceServer) List(context.Context, *BookListReq) (*BookListRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
@@ -124,6 +138,24 @@ type UnsafeBookServiceServer interface {
 
 func RegisterBookServiceServer(s grpc.ServiceRegistrar, srv BookServiceServer) {
 	s.RegisterService(&BookService_ServiceDesc, srv)
+}
+
+func _BookService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/book.BookService/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).Ping(ctx, req.(*PingReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _BookService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -223,6 +255,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "book.BookService",
 	HandlerType: (*BookServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ping",
+			Handler:    _BookService_Ping_Handler,
+		},
 		{
 			MethodName: "List",
 			Handler:    _BookService_List_Handler,

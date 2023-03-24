@@ -26,7 +26,6 @@ message BookStoreReq {
     string description = 2;
 }
 message BookStoreRes {
-    Meta meta = 1;
 }
 
 // book detail
@@ -34,7 +33,6 @@ message BookDetailReq {
     int64 id = 1;
 }
 message BookDetailRes {
-    Meta meta = 1;
     Book book = 2;
 }
 
@@ -45,7 +43,6 @@ message BookUpdateReq {
     string description = 3;
 }
 message BookUpdateRes {
-    Meta meta = 1;
 }
 
 // book delete
@@ -53,17 +50,17 @@ message BookDeleteReq {
     int64 id = 1;
 }
 message BookDeleteRes {
-    Meta meta = 1;
 }
 
-// basic response
-message Meta {
-    int32 code = 1;
-    string message = 2;
-    bool error = 3;
+// ping
+message PingReq {
+}
+message PingRes {
+    string message = 1;
 }
 
 service BookService {
+    rpc Ping (PingReq) returns (PingRes) {}
     rpc List(BookListReq) returns (BookListRes) {}
     rpc Store(BookStoreReq) returns (BookStoreRes) {}
     rpc Detail(BookDetailReq) returns (BookDetailRes) {}
