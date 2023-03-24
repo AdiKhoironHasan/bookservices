@@ -2,18 +2,24 @@ package handler
 
 import (
 	"context"
+	"errors"
+	"net/http"
 
 	"github.com/AdiKhoironHasan/bookservices/domain/entity"
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 )
 
 // List is a function
-func (c *Handler) List(_ context.Context, _ *book.BookListReq) (*book.BookListRes, error) {
+func (c *Handler) List(_ context.Context, bookReq *book.BookListReq) (*book.BookListRes, error) {
 	books := []entity.Book{}
 
-	rows, err := c.repo.DB.Table("public.books").Select("id, title, description, created_at, updated_at").Rows()
+	rows, err := c.repo.DB.Model(&entity.Book{}).Where(&entity.Book{
+		Title: bookReq.Title,
+	}).Select("id, title, description, created_at, updated_at").Rows()
 	if err != nil {
-		return nil, err
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
 	}
 
 	defer rows.Close()
@@ -41,13 +47,9 @@ func (c *Handler) List(_ context.Context, _ *book.BookListReq) (*book.BookListRe
 		ch <- value
 	}(books, ch)
 
-	bookResp := <-ch
-
-	res := &book.BookListRes{
-		Books: bookResp,
-	}
-
-	return res, nil
+	return &book.BookListRes{
+		Books: <-ch,
+	}, nil
 }
 
 func (c *Handler) Store(ctx context.Context, bookReq *book.BookStoreReq) (*book.BookStoreRes, error) {
@@ -58,7 +60,7 @@ func (c *Handler) Store(ctx context.Context, bookReq *book.BookStoreReq) (*book.
 
 	err := c.repo.DB.Create(&bookEntity).Error
 	if err != nil {
-		return nil, err
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
 	}
 
 	return &book.BookStoreRes{}, nil
@@ -67,9 +69,13 @@ func (c *Handler) Store(ctx context.Context, bookReq *book.BookStoreReq) (*book.
 func (c *Handler) Detail(ctx context.Context, bookReq *book.BookDetailReq) (*book.BookDetailRes, error) {
 	bookEntity := entity.Book{}
 
-	err := c.repo.DB.Where("id = ?", bookReq.Id).First(&bookEntity).Error
+	err := c.repo.DB.First(&bookEntity, bookReq.Id).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.New(http.StatusNotFound, "record not found").Err()
+		}
+
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
 	}
 
 	return &book.BookDetailRes{
@@ -81,4 +87,43 @@ func (c *Handler) Detail(ctx context.Context, bookReq *book.BookDetailReq) (*boo
 			UpdatedAt:   bookEntity.UpdatedAt.String(),
 		},
 	}, nil
+}
+
+func (c *Handler) Update(ctx context.Context, bookReq *book.BookUpdateReq) (*book.BookUpdateRes, error) {
+	err := c.repo.DB.First(&entity.Book{}, bookReq.Id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.New(http.StatusNotFound, "record not found").Err()
+		}
+
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
+	}
+
+	err = c.repo.DB.Model(&entity.Book{ID: bookReq.Id}).Updates(&entity.Book{
+		Title:       bookReq.Title,
+		Description: bookReq.Description,
+	}).Error
+	if err != nil {
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
+	}
+
+	return &book.BookUpdateRes{}, nil
+}
+
+func (c *Handler) Delete(ctx context.Context, bookReq *book.BookDeleteReq) (*book.BookDeleteRes, error) {
+	err := c.repo.DB.First(&entity.Book{}, bookReq.Id).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.New(http.StatusNotFound, "record not found").Err()
+		}
+
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
+	}
+
+	err = c.repo.DB.Delete(&entity.Book{}, bookReq.Id).Error
+	if err != nil {
+		return nil, status.New(http.StatusInternalServerError, err.Error()).Err()
+	}
+
+	return &book.BookDeleteRes{}, nil
 }
