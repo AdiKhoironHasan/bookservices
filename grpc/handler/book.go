@@ -7,8 +7,8 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 )
 
-// Ping is a function
-func (c *Handler) List(_ context.Context, _ *book.BookRequest) (*book.BookResponse, error) {
+// List is a function
+func (c *Handler) List(_ context.Context, _ *book.BookListReq) (*book.BookListRes, error) {
 	books := []entity.Book{}
 
 	rows, err := c.repo.DB.Table("public.books").Select("id, title, description, created_at, updated_at").Rows()
@@ -43,9 +43,42 @@ func (c *Handler) List(_ context.Context, _ *book.BookRequest) (*book.BookRespon
 
 	bookResp := <-ch
 
-	res := &book.BookResponse{
+	res := &book.BookListRes{
 		Books: bookResp,
 	}
 
 	return res, nil
+}
+
+func (c *Handler) Store(ctx context.Context, bookReq *book.BookStoreReq) (*book.BookStoreRes, error) {
+	bookEntity := entity.Book{
+		Title:       bookReq.Title,
+		Description: bookReq.Description,
+	}
+
+	err := c.repo.DB.Create(&bookEntity).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &book.BookStoreRes{}, nil
+}
+
+func (c *Handler) Detail(ctx context.Context, bookReq *book.BookDetailReq) (*book.BookDetailRes, error) {
+	bookEntity := entity.Book{}
+
+	err := c.repo.DB.Where("id = ?", bookReq.Id).First(&bookEntity).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &book.BookDetailRes{
+		Book: &book.Book{
+			Id:          bookEntity.ID,
+			Title:       bookEntity.Title,
+			Description: bookEntity.Description,
+			CreatedAt:   bookEntity.CreatedAt.String(),
+			UpdatedAt:   bookEntity.UpdatedAt.String(),
+		},
+	}, nil
 }

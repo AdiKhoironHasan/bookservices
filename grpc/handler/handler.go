@@ -5,7 +5,6 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/domain/service"
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 	"github.com/AdiKhoironHasan/bookservices/proto/hello"
-	// "github.com/AdiKhoironHasan/bookservices/proto/foo"
 )
 
 // Interface is an interface

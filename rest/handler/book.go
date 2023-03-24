@@ -26,7 +26,7 @@ func (r *BookHandler) List(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"code":    http.StatusOK,
-		"data":    data.Books,
+		"data":    data,
 		"message": "Success get all books",
 	})
 }

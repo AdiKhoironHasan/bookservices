@@ -6,11 +6,11 @@ import (
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 )
 
-func (r GRPCClient) Ping(ctx context.Context) (*book.BookResponse, error) {
+func (r GRPCClient) Ping(ctx context.Context) (*book.BookListRes, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	books, err := r.book.List(ctx, &book.BookRequest{})
+	books, err := r.book.List(ctx, &book.BookListReq{})
 	if err != nil {
 		return nil, err
 	}
