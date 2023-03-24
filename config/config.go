@@ -25,6 +25,16 @@ type Config struct {
 	AppTimeZone string
 	GRPCPort    int
 	DBConfig
+	Dependency
+}
+
+type Dependency struct {
+	UserServices DependUserServices
+}
+
+type DependUserServices struct {
+	AppPortGRPC int
+	AppHostGRPC string
 }
 
 func New() *Config {
@@ -44,6 +54,12 @@ func New() *Config {
 			DBPassword: getEnv("DB_PASS", ""),
 			DBTimeZone: getEnv("APP_TIMEZONE", "Asia/Jakarta"),
 			DBLog:      getEnvAsBool("ENABLE_LOGGER", true),
+		},
+		Dependency: Dependency{
+			UserServices: DependUserServices{
+				AppPortGRPC: getEnvAsInt("USER_GRPC_PORT", 9000),
+				AppHostGRPC: getEnv("USER_GRPC_HOST", "localhost"),
+			},
 		},
 	}
 }

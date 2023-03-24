@@ -10,7 +10,12 @@ message BookListReq {
 
 // book list
 message BookListRes {
-   repeated Book books = 1;
+   repeated BookAndAuthor book_and_author = 1;
+}
+message BookAndAuthor {
+    int64 author_id = 1;
+    string author_name = 2;
+    repeated Book books = 3;
 }
 message Book {
     int64 id = 1;
@@ -22,8 +27,9 @@ message Book {
 
 // book store
 message BookStoreReq {
-    string title = 1;
-    string description = 2;
+    int64 author_id = 1;
+    string title = 2;
+    string description = 3;
 }
 message BookStoreRes {
 }
@@ -39,8 +45,9 @@ message BookDetailRes {
 // book update
 message BookUpdateReq {
     int64 id = 1;
-    string title = 2;
-    string description = 3;
+    int64 author_id = 2;
+    string title = 3;
+    string description = 4;
 }
 message BookUpdateRes {
 }

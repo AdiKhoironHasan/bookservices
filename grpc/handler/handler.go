@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/AdiKhoironHasan/bookservices/config"
 	"github.com/AdiKhoironHasan/bookservices/domain/service"
+	"github.com/AdiKhoironHasan/bookservices/grpc/client"
 	"github.com/AdiKhoironHasan/bookservices/proto/book"
 )
 
@@ -14,17 +15,19 @@ type Interface interface {
 
 // Handler is struct
 type Handler struct {
-	config *config.Config
-	repo   *service.Repositories
+	config     *config.Config
+	repo       *service.Repositories
+	grpcClient *client.GRPCClient
 
 	book.UnimplementedBookServiceServer
 }
 
 // NewHandler is a constructor
-func NewHandler(conf *config.Config, repo *service.Repositories) *Handler {
+func NewHandler(conf *config.Config, repo *service.Repositories, grpcClient *client.GRPCClient) *Handler {
 	return &Handler{
-		config: conf,
-		repo:   repo,
+		config:     conf,
+		repo:       repo,
+		grpcClient: grpcClient,
 	}
 }
 

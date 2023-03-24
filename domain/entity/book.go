@@ -8,6 +8,7 @@ import (
 
 type Book struct {
 	ID          int64          `gorm:"not null;uniqueIndex;primaryKe" json:"id"`
+	AuthorId    int64          `gorm:"not null" json:"author_id"`
 	Title       string         `gorm:"not null" json:"title"`
 	Description string         `gorm:"not null" json:"description"`
 	CreatedAt   time.Time      `gorm:"not null;default:now()" json:"created_at,omitempty"`
