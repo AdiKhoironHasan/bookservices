@@ -20,6 +20,7 @@ func ToResponseBookList(users []*protoUser.User, books []entity.Book) []*book.Bo
 		if _, ok := dataUser[val.AuthorId]; ok {
 			book := &book.Book{
 				Id:          val.ID,
+				AuthorId:    val.AuthorId,
 				AuthorName:  dataUser[val.AuthorId],
 				Title:       val.Title,
 				Description: val.Description,

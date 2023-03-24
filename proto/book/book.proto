@@ -7,18 +7,19 @@ package book;
 
 // book list
 message BookListReq {
-    string title = 1;
+    string title = 2;
 }
 message BookListRes {
    repeated Book books = 1;
 }
 message Book {
     int64 id = 1;
-    string author_name = 2;
-    string title = 3;
-    string description = 4;
-    string created_at = 5;
-    string updated_at = 6;
+    int64 author_id = 2;
+    string author_name = 3;
+    string title = 4;
+    string description = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 // book store
