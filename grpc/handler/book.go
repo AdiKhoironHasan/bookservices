@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
-	protoUser "github.com/AdiKhoironHasan/bookservice-protobank/proto/user"
+	protoUser "github.com/AdiKhoironHasan/bookservices-protobank/proto/user"
 )
 
 func (c *Handler) Ping(ctx context.Context, bookReq *book.PingReq) (*book.PingRes, error) {

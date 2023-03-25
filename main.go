@@ -33,17 +33,17 @@ func main() {
 	repo := service.NewDBService(db)
 
 	// grpc client
-	clientConnBook, errClient := client.NewGRPCConn_Book(conf)
-	if errClient != nil {
-		log.Fatalf("grpc client unable connect to server, %v", errClient)
-	}
+	// clientConnBook, errClient := client.NewGRPCConn_Book(conf)
+	// if errClient != nil {
+	// 	log.Fatalf("grpc client unable connect to server, %v", errClient)
+	// }
 
 	clientConnUser, errClient := client.NewGRPCConn_User(conf)
 	if errClient != nil {
 		log.Fatalf("grpc client unable connect to userservice, %v", errClient)
 	}
 
-	grpcClient := client.NewGRPCClient(clientConnBook, clientConnUser)
+	grpcClient := client.NewGRPCClient(clientConnUser)
 
 	command := cmd.NewCommand(
 		cmd.WithConfig(conf),

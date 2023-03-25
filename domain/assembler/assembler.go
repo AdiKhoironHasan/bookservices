@@ -1,9 +1,9 @@
 package assembler
 
 import (
-	protoUser "github.com/AdiKhoironHasan/bookservice-protobank/proto/user"
 	"github.com/AdiKhoironHasan/bookservices-books/domain/entity"
 	"github.com/AdiKhoironHasan/bookservices-books/proto/book"
+	protoUser "github.com/AdiKhoironHasan/bookservices-protobank/proto/user"
 )
 
 func ToResponseBookList(users []*protoUser.User, books []entity.Book) []*book.Book {

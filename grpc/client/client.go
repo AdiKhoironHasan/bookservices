@@ -1,21 +1,20 @@
 package client
 
 import (
-	protoUser "github.com/AdiKhoironHasan/bookservice-protobank/proto/user"
-	"github.com/AdiKhoironHasan/bookservices-books/proto/book"
+	protoUser "github.com/AdiKhoironHasan/bookservices-protobank/proto/user"
 	"google.golang.org/grpc"
 )
 
 // GRPCClient is a struct
 type GRPCClient struct {
-	book book.BookServiceClient
+	// book book.BookServiceClient
 	User protoUser.UserServiceClient
 }
 
 // NewGRPCClient is constructor
-func NewGRPCClient(connBook grpc.ClientConnInterface, connUser grpc.ClientConnInterface) *GRPCClient {
+func NewGRPCClient(connUser grpc.ClientConnInterface) *GRPCClient {
 	return &GRPCClient{
-		book: book.NewBookServiceClient(connBook),
+		// book: book.NewBookServiceClient(connBook),
 		User: protoUser.NewUserServiceClient(connUser),
 	}
 }

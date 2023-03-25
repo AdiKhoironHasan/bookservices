@@ -3,7 +3,7 @@ module github.com/AdiKhoironHasan/bookservices-books
 go 1.20
 
 require (
-	github.com/AdiKhoironHasan/bookservice-protobank v1.1.6
+	github.com/AdiKhoironHasan/bookservices-protobank v1.2.0
 	github.com/gin-gonic/gin v1.9.0
 	github.com/joho/godotenv v1.4.0
 	github.com/urfave/cli/v2 v2.24.4
